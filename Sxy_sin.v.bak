@@ -1,0 +1,27 @@
+module Sxy_sin
+(
+	input clk,
+	input rst_n,
+	input [23:0]fin,
+	output[15:0] Sin
+);
+
+	reg[31:0]phase;
+	wire[48:0]temp=fin*24'd11258999;
+	wire[31:0]K_12_20=temp[47:18];
+	
+	//相位累加器
+	always@(posedge clk or negedge rst_n)
+		if(!rst_n)
+			phase<=32'd0;
+		else 
+			phase<=phase+K_12_20;
+//IP核例化接口		
+ROM_sin	ROM_sin_inst 
+	(
+	.address ( phase[31:20]),//缩小2^20倍，左移20位
+	.clock ( clk ),
+	.q ( Sin )
+	);
+
+endmodule

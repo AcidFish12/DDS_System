@@ -1,0 +1,12 @@
+module Sxy_DDS
+(
+	input wire clk,  				//100MHz
+	input wire rst_n, 			//复位
+	input wire [1:0] mode,		//0Sin	/1AM	/2FM	/3输出AM解调
+	input wire [23:0]fc,			//频率		/载波频率		/载波频率	/
+	input wire [21:0]fs,			//无		/调制频率		/调制频率	/
+	input wire [3:0]ma,			//无		/调制度		/无			/				/最大频率	/
+	input wire [15:0]fd,			//无		/无				/最大频偏	/
+	output wire[15:0]sig_out	//输出		/输出			/输出		/
+);
+endmodule

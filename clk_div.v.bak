@@ -1,0 +1,29 @@
+module clk_div
+(
+	clk_in,
+	div_num,
+	clk_out,
+);
+reg [23:0]div_cnt;
+reg clk_0;
+always@(posedge clk_in or negedge rst_n)
+begin
+if(!rst_n)
+begin
+	div_cnt<=0;
+	clk_o<=0;
+end
+else if(div_cnt<clk_div/2-1)
+		begin
+			div_cnt<=div_cnt+1;
+			clk_o<=clk_o;
+		end
+		else
+		begin
+			clk_o<=~clk_o;
+			div_cnt<=0;
+		end
+end
+assign clk_out=clk_0;
+endmodule
+

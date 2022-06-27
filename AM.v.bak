@@ -1,0 +1,33 @@
+module AM
+(
+	input	clk_100M,
+	input rst_n,
+	input wire [3:0]ma,
+	input [15:0] carrier,
+	input [15:0] modulated,
+	output[15:0] AM_Sig
+);
+//默认调制度1
+//无符号转为有符号
+	wire[15:0] carrier_s={!carrier[15],carrier[14:0]};
+	wire[15:0] modulated_s={!modulated[15],modulated[14:0]};
+	
+	wire[16:0]Sum;
+//{modulated_S[15],modulated_s}将15位的有符号变为26位的，直接吧符号位加到高位
+//无符号数变的话前面加零
+assign Sum={modulated_s[15],modulated_s}+16'd32767;
+
+wire[31:0]result;
+wire[15:0]temp;
+
+assign temp={result[31:16]};
+assign AM_Sig={~temp[15],temp[14:0]};
+
+mult_16_16	mult_16_16_inst 
+(
+	.dataa ( Sum[16:1] ),
+	.datab ( carrier_s),
+	.result ( result )
+);
+
+endmodule

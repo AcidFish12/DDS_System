@@ -1,0 +1,30 @@
+module FM(
+	input clk,
+	input rst_n,
+	input [15:0] modulated,	
+	input [15:0] fd,
+	input [23:0] fc,
+	output [15:0] FM_Sig
+);
+	
+	wire [24:0] f_fm;
+	wire[15:0] modulated_s={!modulated[15],modulated[14:0]};
+	wire[15:0] fd_s={1'b0,fd[14:0]};
+
+	wire signed [31:0] s; 
+	
+	assign f_fm= {1'b0,fc} + {{9{s[31]}},s[30:15]};
+mult_s	mult_s_inst1(
+	.dataa ( fd_s ),
+	.datab ( modulated_s),
+	.result ( s )
+	);
+	
+sin sin_FM(
+ .clk(clk),
+ .rst_n(rst_n),
+ .fin(f_fm),
+ .sin(FM_Sig)
+);
+
+endmodule
